@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{puzzle.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{puzzle.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/puzzles/add}" th:text="#{puzzle.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${puzzles.empty}" th:text="#{puzzle.list.empty}" />
+            <div th:if="${!puzzles.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{puzzle.id.label}" scope="col" />
+                            <th th:text="#{puzzle.year.label}" scope="col" />
+                            <th th:text="#{puzzle.day.label}" scope="col" />
+                            <th th:text="#{puzzle.problem.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="puzzle : ${puzzles}">
+                            <td th:text="${puzzle.id}" />
+                            <td th:text="${puzzle.year}" />
+                            <td th:text="${puzzle.day}" />
+                            <td th:text="${puzzle.problem}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/puzzles/edit/{id}(id=${puzzle.id})}" th:text="#{puzzle.list.edit}" class="btn btn-sm btn-secondary" />
+                                    <form th:action="@{/puzzles/delete/{id}(id=${puzzle.id})}"
+                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
+                                        <button th:text="#{puzzle.list.delete}" type="submit" class="btn btn-sm btn-secondary" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
